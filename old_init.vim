@@ -1,20 +1,11 @@
 syntax on
 
-" Wild stuff, ignore files
-set wildignore+=*.pyc
-set wildignore+=*_build/*
-set wildignore+=**/coverage/*
-set wildignore+=**/node_modules/*
-set wildignore+=**/android/*
-set wildignore+=**/ios/*
-set wildignore+=**/.git/*
-
 set noerrorbells
 set backspace=indent,eol,start
 set nohlsearch
 set hidden
 set nu
-set norelativenumber
+set relativenumber
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -22,7 +13,7 @@ set noexpandtab
 set smartindent
 set smartcase
 set noswapfile
-set wrap
+set nowrap
 set nobackup
 set undodir=~/.vim/undodir
 set undofile
@@ -30,111 +21,39 @@ set incsearch
 set scrolloff=8
 set signcolumn=yes
 
-"plugins here:
 call plug#begin('~/.config/nvim/plugged')
 
-"Auto Complete:
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"plugins here:
 
+"Auto Complete:
+
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'nvim-lua/completion-nvim'
 " For func argument completion
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 
+
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' } "OMG they finally released v0.1!
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'tweekmonster/gofmt.vim'
-Plug 'tpope/vim-fugitive'
+" Plug 'jremmen/vim-ripgrep'
+" Plug 'tpope/vim-fugitive'
 Plug 'vim-utils/vim-man'
-" Plug 'lyuts/vim-rtags'
+Plug 'lyuts/vim-rtags'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-dispatch'
 Plug 'gruvbox-community/gruvbox'
 Plug 'tpope/vim-projectionist'
 
-" Markdown, RUN: call mkdp#util#install()
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug', 'md', 'mdx']}
+" Markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 call plug#end()        
 
-" NeoSnippets:
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-" For conceal markers.
-if has('conceal')
-	set conceallevel=2 concealcursor=niv
-endif
-
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all"
-ensure_installed = { "c", "lua", "rust", "javascript", "typescript", "python", "go" },
-
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- List of parsers to ignore installing (for "all")
-  ignore_install = { "php" },
-
-  highlight = {
-    -- `false` will disable the whole extension
-    enable = true,
-
-    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-    -- the name of the parser)
-    -- list of language that will be disabled
-    disable = { "php" },
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
-
--- require('telescope').setup{
---   defaults = {
---     -- Default configuration for telescope goes here:
---     -- config_key = value,
---     mappings = {
---       i = {
---         -- map actions.which_key to <C-h> (default: <C-/>)
---         -- actions.which_key shows the mappings for your picker,
---         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
---         ["<C-h>"] = "which_key"
---       }
---     }
---   },
---   pickers = {
---     -- Default configuration for builtin pickers goes here:
---     -- picker_name = {
---     --   picker_config_key = value,
---     --   ...
---     -- }
---     -- Now the picker_config_key will be applied every time you call this
---     -- builtin picker
---   },
---   extensions = {
---     -- Your extension configuration goes here:
---     -- extension_name = {
---     --   extension_config_key = value,
---     -- }
---     -- please take a look at the readme of the extension you want to configure
---   }
--- }
-EOF
-
-"autocmd BufEnter * lua require'completion'.on_attach()
+autocmd BufEnter * lua require'completion'.on_attach()
 
 colorscheme gruvbox
-
 highlight Normal guibg=none
 "set background=dark
 
@@ -160,7 +79,7 @@ let g:deoplete#enable_at_startup = 1
 " neosnippet
 let g:neosnippet#enable_completed_snippet = 1
 
-lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
+
 le:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
 let loaded_matchparen = 1
@@ -168,7 +87,7 @@ let loaded_matchparen = 1
 " Markdown:
 " set to 1, nvim will open the preview window after entering the markdown buffer
 " default: 0
-let g:mkdp_auto_start = 0
+let g:mkdp_auto_start = 1
 
 " set to 1, the nvim will auto close current preview window when change
 " from markdown buffer to another buffer
@@ -179,7 +98,7 @@ let g:mkdp_auto_close = 1
 " leave from insert mode, default 0 is auto refresh markdown as you edit or
 " move the cursor
 " default: 0
-let g:mkdp_refresh_slow = 1
+let g:mkdp_refresh_slow = 0
 
 " set to 1, the MarkdownPreview command can be use for all files,
 " by default it can be use in markdown file
@@ -203,7 +122,7 @@ let g:mkdp_browser = ''
 
 " set to 1, echo preview page url in command line when open preview page
 " default is 0
-let g:mkdp_echo_preview_url = 1
+let g:mkdp_echo_preview_url = 0
 
 " a custom vim function name to open preview page
 " this function will receive url as param
@@ -255,14 +174,11 @@ let g:mkdp_page_title = '「${name}」'
 
 " recognized filetypes
 " these filetypes will have MarkdownPreview... commands
-let g:mkdp_filetypes = ['markdown', 'md', 'mdx']
-
-highlight Normal guibg=none
+let g:mkdp_filetypes = ['markdown', 'md']
 
 nnoremap <leader>pv :Ex<CR>
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-"" Ignore files
 
 "Tabbing:
 nmap <Leader>n <C-w>n<cr>
