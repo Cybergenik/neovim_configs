@@ -18,7 +18,7 @@ set norelativenumber
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set noexpandtab
+set expandtab
 set smartindent
 set smartcase
 set noswapfile
@@ -29,33 +29,56 @@ set undofile
 set incsearch
 set scrolloff=8
 set signcolumn=yes
+set textwidth=80
 
 "plugins here:
 call plug#begin('~/.config/nvim/plugged')
 
 "Auto Complete:
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-" For func argument completion
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
 
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' } "OMG they finally released v0.1!
 Plug 'tweekmonster/gofmt.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'vim-utils/vim-man'
+Plug 'paretje/vim-man'
 " Plug 'lyuts/vim-rtags'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-dispatch'
 Plug 'gruvbox-community/gruvbox'
 Plug 'tpope/vim-projectionist'
 
+" Shell runner
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+
+" LSP Support
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+
+" Autocompletion
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-nvim-lua'
+
+"  Snippets
+Plug 'L3MON4D3/LuaSnip'
+Plug 'rafamadriz/friendly-snippets'
+
+Plug 'VonHeikemen/lsp-zero.nvim'
+
 " Markdown, RUN: call mkdp#util#install()
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug', 'md', 'mdx']}
 
-call plug#end()        
+" Status bar:
+Plug 'nvim-lualine/lualine.nvim'
+" Icons in status bar
+Plug 'kyazdani42/nvim-web-devicons'
+
+call plug#end()
 
 " NeoSnippets:
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -70,26 +93,43 @@ if has('conceal')
 	set conceallevel=2 concealcursor=niv
 endif
 
+lua << END
+require('lualine').setup {
+    options = {
+        icons_enabled = false,
+        theme = 'auto',
+        component_separators = { left = '|', right = '|'},
+        section_separators = { left = '|', right = '|'},
+    }
+}
+END
+
+lua << EOF
+local lsp = require('lsp-zero')
+
+lsp.preset('recommended')
+lsp.ensure_installed({
+  'rust_analyzer',
+  'clangd',
+  'cmake',
+  'gopls',
+  'pyright',
+  'sumneko_lua',
+})
+lsp.setup()
+EOF
+
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-ensure_installed = { "c", "lua", "rust", "javascript", "typescript", "python", "go" },
+  ensure_installed = { "c", "lua", "rust", "javascript", "typescript", "python", "go", "vim" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
-  -- List of parsers to ignore installing (for "all")
-  ignore_install = { "php" },
-
   highlight = {
     -- `false` will disable the whole extension
     enable = true,
-
-    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-    -- the name of the parser)
-    -- list of language that will be disabled
-    disable = { "php" },
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -98,40 +138,7 @@ ensure_installed = { "c", "lua", "rust", "javascript", "typescript", "python", "
     additional_vim_regex_highlighting = false,
   },
 }
-
--- require('telescope').setup{
---   defaults = {
---     -- Default configuration for telescope goes here:
---     -- config_key = value,
---     mappings = {
---       i = {
---         -- map actions.which_key to <C-h> (default: <C-/>)
---         -- actions.which_key shows the mappings for your picker,
---         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
---         ["<C-h>"] = "which_key"
---       }
---     }
---   },
---   pickers = {
---     -- Default configuration for builtin pickers goes here:
---     -- picker_name = {
---     --   picker_config_key = value,
---     --   ...
---     -- }
---     -- Now the picker_config_key will be applied every time you call this
---     -- builtin picker
---   },
---   extensions = {
---     -- Your extension configuration goes here:
---     -- extension_name = {
---     --   extension_config_key = value,
---     -- }
---     -- please take a look at the readme of the extension you want to configure
---   }
--- }
 EOF
-
-"autocmd BufEnter * lua require'completion'.on_attach()
 
 colorscheme gruvbox
 
@@ -154,11 +161,11 @@ set completeopt=menuone,noinsert,noselect
 " Avoid showing message extra message when using completion
 set shortmess+=c
 
-" deoplete
-let g:deoplete#enable_at_startup = 1
-
-" neosnippet
-let g:neosnippet#enable_completed_snippet = 1
+"" deoplete
+"let g:deoplete#enable_at_startup = 0
+"
+"" neosnippet
+"let g:neosnippet#enable_completed_snippet = 1
 
 lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 le:vim_be_good_log_file = 1
@@ -257,6 +264,8 @@ let g:mkdp_page_title = '「${name}」'
 " these filetypes will have MarkdownPreview... commands
 let g:mkdp_filetypes = ['markdown', 'md', 'mdx']
 
+let g:nvim_man_default_target = 'horizontal'
+
 highlight Normal guibg=none
 
 nnoremap <leader>pv :Ex<CR>
@@ -281,8 +290,8 @@ nmap <Leader><S-h> <C-w><S-h><cr>
 nmap <Leader><S-j> <C-w><S-j><cr>
 nmap <Leader><S-k> <C-w><S-k><cr>
 
-nnoremap <Leader>( :horizontal resize +5<CR>
-nnoremap <Leader>) :horizontal resize -5<CR>
+nnoremap <Leader>( :resize +5<CR>
+nnoremap <Leader>) :resize -5<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 nnoremap <Leader>rp :resize 100<CR>
