@@ -31,6 +31,12 @@ set scrolloff=8
 set signcolumn=yes
 set textwidth=80
 
+" Neovide
+if exists("g:neovide")
+    " set guifont=*:h4
+    " let g:neovide_scale_factor = 1.0
+endif
+
 "plugins here:
 call plug#begin('~/.config/nvim/plugged')
 
@@ -80,6 +86,10 @@ Plug 'kyazdani42/nvim-web-devicons'
 
 call plug#end()
 
+colorscheme gruvbox
+
+" highlight Normal guibg=none
+
 " NeoSnippets:
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -114,9 +124,17 @@ lsp.ensure_installed({
   'cmake',
   'gopls',
   'pyright',
-  'sumneko_lua',
 })
 lsp.setup()
+
+vim.diagnostic.config({
+    virtual_text = true,
+    signs = true,
+    update_in_insert = false,
+    underline = true,
+    severity_sort = false,
+    float = true,
+})
 EOF
 
 lua << EOF
@@ -139,11 +157,6 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
-
-colorscheme gruvbox
-
-highlight Normal guibg=none
-"set background=dark
 
 if executable('rg')
     let g:rg_derive_root='true'
