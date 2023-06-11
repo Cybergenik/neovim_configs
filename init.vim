@@ -50,12 +50,14 @@ Plug 'tpope/vim-fugitive'
 Plug 'paretje/vim-man'
 " Plug 'lyuts/vim-rtags'
 Plug 'mbbill/undotree'
-Plug 'tpope/vim-dispatch'
 Plug 'gruvbox-community/gruvbox'
 Plug 'tpope/vim-projectionist'
 
-" Shell runner
+" Shell runners
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'tpope/vim-dispatch'
+Plug 'timonv/vim-cargo'
+
 
 " LSP Support
 Plug 'neovim/nvim-lspconfig'
