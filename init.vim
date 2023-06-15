@@ -283,30 +283,30 @@ let g:nvim_man_default_target = 'horizontal'
 
 highlight Normal guibg=none
 
-nnoremap <leader>pv :Ex<CR>
+nnoremap <leader>kk :Vexplore<CR>:vertical resize -60<CR>
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 "" Ignore files
 
 "Tabbing:
-nmap <Leader>n <C-w>n<cr>
-nmap <Leader>q <C-w>q<cr>
+nmap <Leader>n <C-w>n
+nmap <Leader>q <C-w>q
 
 nmap <S-Tab> :tabprev<Return>
 nmap <Tab>   :tabnext<Return>
 
-nmap <Leader>l <C-w>l<cr>
-nmap <Leader>h <C-w>h<cr>
-nmap <Leader>j <C-w>j<cr>
-nmap <Leader>k <C-w>k<cr>
+nmap <Leader>l <C-w>l
+nmap <Leader>h <C-w>h
+nmap <Leader>j <C-w>j
+nmap <Leader>k <C-w>k
 
-nmap <Leader><S-l> <C-w><S-l><cr>
-nmap <Leader><S-h> <C-w><S-h><cr>
-nmap <Leader><S-j> <C-w><S-j><cr>
-nmap <Leader><S-k> <C-w><S-k><cr>
+nmap <Leader><S-l> <C-w><S-l>
+nmap <Leader><S-h> <C-w><S-h>
+nmap <Leader><S-j> <C-w><S-j>
+nmap <Leader><S-k> <C-w><S-k>
 
 nnoremap <Leader>( :resize +5<CR>
 nnoremap <Leader>) :resize -5<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
-nnoremap <Leader>rp :resize 100<CR>
+nnoremap <Leader>r :resize 100<CR>
