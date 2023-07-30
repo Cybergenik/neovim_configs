@@ -283,13 +283,12 @@ let g:nvim_man_default_target = 'horizontal'
 
 highlight Normal guibg=none
 
-nnoremap <leader>kk :vertical Spawn<Return>
+nnoremap <leader>b :vertical Spawn<Return>
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 "" Ignore files
 
 "Tabbing:
-nmap <Leader> :tabnew<Return>
 nmap <Leader>t :tabnew<Return>
 nmap <S-Tab> :tabprev<Return>
 nmap <Tab>   :tabnext<Return>
