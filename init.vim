@@ -58,6 +58,7 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'tpope/vim-dispatch'
 Plug 'timonv/vim-cargo'
 
+Plug 'rust-lang/rust.vim'
 
 " LSP Support
 Plug 'neovim/nvim-lspconfig'
@@ -86,7 +87,15 @@ Plug 'nvim-lualine/lualine.nvim'
 " Icons in status bar
 Plug 'kyazdani42/nvim-web-devicons'
 
+" Debugger
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'leoluz/nvim-dap-go'
+
 call plug#end()
+
+lua require("dapui").setup()
+lua require("dap-go").setup()
 
 colorscheme gruvbox
 
@@ -125,7 +134,6 @@ lsp.ensure_installed({
   'clangd',
   'cmake',
   'gopls',
-  'pyright',
 })
 lsp.setup()
 
@@ -186,6 +194,9 @@ lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incr
 le:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
 let loaded_matchparen = 1
+
+" rust
+let g:rust_clip_command = 'xclip -selection clipboard'
 
 " Markdown:
 " set to 1, nvim will open the preview window after entering the markdown buffer
@@ -283,10 +294,20 @@ let g:nvim_man_default_target = 'horizontal'
 
 highlight Normal guibg=none
 
+" Term
 nnoremap <leader>b :vertical Spawn<Return>
+
+" Search
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-"" Ignore files
+
+" Debugger
+nnoremap <leader>db <cmd>lua require('dap').toggle_breakpoint()<cr>
+nnoremap <leader>dc <cmd>lua require('dap').continue()<cr>
+nnoremap <leader>dr <cmd>lua require('dap').repl.open()<cr>
+nnoremap <leader>dl <cmd>lua require('dap').run_last()<cr>
+nnoremap <leader>dh <cmd>lua require('dap.ui.widget').hover()<cr>
+nnoremap <leader>dp <cmd>lua require('dap.ui.widget').preview()<cr>
 
 "Tabbing:
 nmap <Leader>t :tabnew<Return>
