@@ -9,6 +9,9 @@ set wildignore+=**/android/*
 set wildignore+=**/ios/*
 set wildignore+=**/.git/*
 
+" Clipboard default
+set clipboard+=unnamedplus
+
 set noerrorbells
 set backspace=indent,eol,start
 set nohlsearch
@@ -114,7 +117,7 @@ if has('conceal')
 	set conceallevel=2 concealcursor=niv
 endif
 
-lua << END
+lua << EOF
 require('lualine').setup {
     options = {
         icons_enabled = false,
@@ -123,9 +126,7 @@ require('lualine').setup {
         section_separators = { left = '|', right = '|'},
     }
 }
-END
 
-lua << EOF
 local lsp = require('lsp-zero')
 
 lsp.preset('recommended')
@@ -145,10 +146,8 @@ vim.diagnostic.config({
     severity_sort = false,
     float = true,
 })
-EOF
 
-lua << EOF
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
   -- A list of parser names, or "all"
   ensure_installed = { "c", "lua", "rust", "javascript", "typescript", "python", "go", "vim" },
 
@@ -165,7 +164,16 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
+  incremental_selection = { enable = true },
+  textobjects = { enable = true },
 }
+
+require('telescope').setup { 
+    defaults = {
+        file_ignore_patterns = { "vendor", "changelog" },
+    }
+}
+
 EOF
 
 if executable('rg')
@@ -190,7 +198,6 @@ set shortmess+=c
 "" neosnippet
 "let g:neosnippet#enable_completed_snippet = 1
 
-lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 le:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
 let loaded_matchparen = 1
