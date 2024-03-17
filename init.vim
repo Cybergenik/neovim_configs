@@ -301,6 +301,10 @@ let g:nvim_man_default_target = 'horizontal'
 
 highlight Normal guibg=none
 
+" LSP 
+nnoremap <leader>gq :lua vim.lsp.buf.format()<Return>
+nnoremap <leader>y :lua vim.lsp.buf.code_action()<Return>
+
 " Term
 nnoremap <leader>b :vertical Spawn<Return>
 
