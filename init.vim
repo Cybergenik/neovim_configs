@@ -56,6 +56,10 @@ Plug 'mbbill/undotree'
 Plug 'gruvbox-community/gruvbox'
 Plug 'tpope/vim-projectionist'
 
+" File manipulation (tree view)
+Plug 'nvim-tree/nvim-web-devicons' " optional
+Plug 'nvim-tree/nvim-tree.lua'
+
 " Shell runners
 Plug 'nvim-neotest/nvim-nio'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
@@ -98,6 +102,8 @@ Plug 'leoluz/nvim-dap-go'
 
 call plug#end()
 
+lua require("nvim-tree-setup")
+
 lua require("dapui").setup()
 lua require("dap-go").setup()
 
@@ -115,7 +121,7 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " For conceal markers.
 if has('conceal')
-	set conceallevel=2 concealcursor=niv
+	set conceallevel=2
 endif
 
 lua << EOF
@@ -136,19 +142,36 @@ lsp_zero.on_attach(function(client, bufnr)
   lsp_zero.default_keymaps({buffer = bufnr})
 end)
 
+lsp_zero.extend_lspconfig({
+    sign_text = true,
+    capabilities = require('cmp_nvim_lsp').default_capabilities()
+})
+local cmp = require('cmp')
+
+cmp.setup({
+sources = {
+  {name = 'nvim_lsp'},
+},
+mapping = cmp.mapping.preset.insert({}),
+})
+
 require('mason').setup({})
 require('mason-lspconfig').setup({
     -- Replace the language servers listed here 
     -- with the ones you want to install
     ensure_installed = {
       'rust_analyzer',
-      'clangd',
+      'bufls',
       'cmake',
       'gopls',
+      'eslint'
     },
     handlers = {
       function(server_name)
-        require('lspconfig')[server_name].setup({})
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+        require('lspconfig')[server_name].setup({
+            capabilities = capabilities,
+        })
       end,
     },
 })
@@ -315,6 +338,9 @@ let g:mkdp_filetypes = ['markdown', 'md', 'mdx']
 let g:nvim_man_default_target = 'horizontal'
 
 highlight Normal guibg=none
+
+" Tree view 
+nnoremap <leader>F <cmd>NvimTreeOpen<Return>
 
 " LSP 
 nnoremap <leader>gq :lua vim.lsp.buf.format()<Return>
