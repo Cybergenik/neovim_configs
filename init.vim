@@ -161,7 +161,7 @@ require('mason-lspconfig').setup({
     -- with the ones you want to install
     ensure_installed = {
       'rust_analyzer',
-      'bufls',
+      'elixirls',
       'cmake',
       'gopls',
       'eslint'
@@ -345,6 +345,7 @@ nnoremap <leader>F <cmd>NvimTreeOpen<Return>
 " LSP 
 nnoremap <leader>gq :lua vim.lsp.buf.format()<Return>
 nnoremap <leader>y :lua vim.lsp.buf.code_action()<Return>
+nnoremap <leader>r :lua vim.lsp.buf.rename()<Return>
 
 " Term
 nnoremap <leader>b :vertical Spawn<Return>
@@ -384,4 +385,3 @@ nnoremap <Leader>( :resize +5<CR>
 nnoremap <Leader>) :resize -5<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
-nnoremap <Leader>r :resize 100<CR>
