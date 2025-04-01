@@ -208,7 +208,7 @@ require('nvim-treesitter.configs').setup {
 
 require('telescope').setup { 
     defaults = {
-        file_ignore_patterns = { "vendor", "changelog" },
+        file_ignore_patterns = { "vendor", "changelog", "changes"},
     }
 }
 
@@ -340,9 +340,10 @@ let g:nvim_man_default_target = 'horizontal'
 highlight Normal guibg=none
 
 " Tree view 
-nnoremap <leader>F <cmd>NvimTreeOpen<Return>
+nnoremap <leader>F :NvimTreeFindFile %<Return>
 
 " LSP 
+nnoremap <leader>gd :lua vim.lsp.buf.definition()<Return>
 nnoremap <leader>gq :lua vim.lsp.buf.format()<Return>
 nnoremap <leader>y :lua vim.lsp.buf.code_action()<Return>
 nnoremap <leader>r :lua vim.lsp.buf.rename()<Return>
