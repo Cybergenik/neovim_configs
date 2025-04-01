@@ -340,13 +340,13 @@ let g:nvim_man_default_target = 'horizontal'
 highlight Normal guibg=none
 
 " Tree view 
-nnoremap <leader>F :NvimTreeFindFile %<Return>
+nnoremap <leader>F :NvimTreeFindFile<Return>
 
 " LSP 
-nnoremap <leader>gd :lua vim.lsp.buf.definition()<Return>
-nnoremap <leader>gq :lua vim.lsp.buf.format()<Return>
-nnoremap <leader>y :lua vim.lsp.buf.code_action()<Return>
-nnoremap <leader>r :lua vim.lsp.buf.rename()<Return>
+nnoremap <leader>gd <cmd>tab split <bar> lua vim.lsp.buf.definition()<Return>
+nnoremap <leader>gq <cmd>lua vim.lsp.buf.format()<Return>
+nnoremap <leader>y <cmd>lua vim.lsp.buf.code_action()<Return>
+nnoremap <leader>r <cmd>lua vim.lsp.buf.rename()<Return>
 
 " Term
 nnoremap <leader>b :vertical Spawn<Return>
