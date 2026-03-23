@@ -187,7 +187,7 @@ vim.diagnostic.config({
 
 require('nvim-treesitter.configs').setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "c", "lua", "rust", "javascript", "typescript", "python", "go", "vim" },
+  ensure_installed = { "c", "lua", "rust", "javascript", "typescript", "python", "go", "vim", "haskell" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
